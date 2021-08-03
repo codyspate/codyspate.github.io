@@ -1,11 +1,40 @@
-import { ButtonHTMLAttributes, MouseEventHandler, useState } from "react"
+import { ButtonHTMLAttributes, MouseEventHandler, useState } from 'react';
+import styled from 'styled-components';
+import { PauseSvg } from './pause';
+import { PlaySvg } from './play';
+import styles from './play-pause.module.css';
 
-export const PlayPause = () => {
-    const [isPlaying, setIsPlaying]  = useState(false)   
-    const onClick = (e: any) => {
-        setIsPlaying(!isPlaying)
-    }
-    return (
-        <div><button onClick={onClick}>{isPlaying ? 'Pause' : 'Play'}</button></div>
-    );
+const PlayPauseButton = styled.button`
+  background: none;
+  border: none;
+  &:hover {
+    background: none;
+    border: none;
+  }
+  height: 34px;
+  width: 34px;
+  svg {
+    fill: #a3b2ca;
+  }
+`;
+
+interface PlayPauseProps {
+  onPlay(): void;
+  isPlaying: boolean;
 }
+
+export const PlayPause = ({ onPlay = () => {}, isPlaying }: PlayPauseProps) => {
+  const onClick = (e: any) => {
+    onPlay();
+  };
+  return (
+    <div>
+      <PlayPauseButton
+        onClick={onClick}
+        className={isPlaying ? 'pause' : 'play'}
+      >
+        {!isPlaying ? <PlaySvg /> : <PauseSvg />}
+      </PlayPauseButton>
+    </div>
+  );
+};
